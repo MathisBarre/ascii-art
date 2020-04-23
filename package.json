@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "aws4": "^1.9.1",
     "aws-sign2": "^0.7.0",
+    "aws4": "^1.9.1",
     "babel-preset-current-node-syntax": "^0.1.2",
     "balanced-match": "^1.0.0",
     "browser-process-hrtime": "^1.0.0",
@@ -18,7 +18,8 @@
     "co": "^4.6.0",
     "collect-v8-coverage": "^1.0.1",
     "color-name": "^1.1.4",
-    "jest": "^25.4.0"
+    "jest": "^25.4.0",
+    "node": "^14.0.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -26,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "cig-ascii_art"
+    "url": "ascii-art"
   },
   "keywords": [
     "codingame.com",
