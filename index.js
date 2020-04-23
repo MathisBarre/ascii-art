@@ -1,5 +1,4 @@
 /**
- * 
  * Puzzle ASCII ART by codeingame.com
  *     _    ____   ____ ___ ___      _    ____ _____
  *    / \  / ___| / ___|_ _|_ _|    / \  |  _ \_   _|
@@ -7,27 +6,29 @@
  *  / ___ \ ___) | |___ | | | |   / ___ \|  _ < | |
  * /_/   \_\____/ \____|___|___| /_/   \_\_| \_\|_|
  * 
+ * TODO: Stantard js (standard-prettier)
  */
-
 
 /**
  * Create an array with a defined length and elements
+ * * Test passed
  * @param {number} length Length of the desired array
  * @param {any} elt Element to include into the array
  */
 function createArray(length, elt) {
     let array = []
     for (let i = 0 ; i < length ; i++) {
-        array.push(elt)
+        array.push(elt.slice())
     }
     return array
 }
 
 /**
  * Create an array of lines by reading nbLines lines
+ * * Test passed
  * @param {number} nbLines Number of lines to read
  */
-function createArrayOfLines(nbLines) {
+function linesToArray(nbLines) {
     let array = []
     for (let i = 0; i < nbLines; i++) { 
         array.push(readline())
@@ -37,17 +38,18 @@ function createArrayOfLines(nbLines) {
 
 /**
  * Return an nested array of letters
+ * * Test passed
  * @param {Object[]} lines - The array of lines
- * @param {Object[]} array - A nested array with alphabet.length empty array
- * @param {string} alphabet - String of the alphabet
+ * @param {Object[]} array - A nested array with characters.length empty array
+ * @param {string} characters - String of the characters
  * @param {number} letterWidth - The width of the ASCII letters
  */
-function createArrayOfLetters(lines, alphabet, array, letterWidth) {
+function createArrayOfLetters(lines, array, characters, letterWidth) {
     lines.forEach((line) => {
-        line = line.split("") // To array
-        for (let i = 0; i < alphabet.length; i++) {
-            result = line.splice(0, letterWidth)
-            array[i].push(result.join(""))
+        line = line.split("") // Transform to an array
+        for (let i = 0; i < characters.length; i++) { // For each characters part of the line
+            result = line.splice(0, letterWidth)      // Take this part (and remove it from the string)
+            array[i].push(result.join(""))            // And push this part as a string in the array
         }
     })
     return array
@@ -55,44 +57,52 @@ function createArrayOfLetters(lines, alphabet, array, letterWidth) {
 
 /**
  * Display a letter
+ * * Test passed
  * @param {string} letter - The letter to log
- * @param {Object[]} arrayOfLetter - The ASCII array of letter
+ * @param {Object[]} arrayOfASCIILetters - The ASCII array of letter
+ * @param {string} characters - A string representing all the characters
  */
-function print(letter, arrayOfLetter) {
+function print(letter, arrayOfASCIILetters, characters) {
     if (letter.length > 1 || typeof letter != "string") console.error("ERROR : This is not a letter") 
-    const index = alphabet.indexOf(letter)
-    arrayOfLetter[index].forEach((line) => {
+    const index = ( characters.indexOf(letter) !== -1 ) ? characters.indexOf(letter) : characters.length - 1
+    arrayOfASCIILetters[index].forEach((line) => {
         console.log(line)
     })
 }
 
 /**
  * Display a string of letters
- * @param {string} str String to display
- * @param {Object[]} arrayOfLetter An ASCII array of letter
+ * * Test passed
+ * @param {string} textToDisplay String to display
+ * @param {Object[]} arrayOfASCIILetters An ASCII array of letter
+ * @param {string} characters - A string representing all the characters
  */
-function bulkPrint(str, arrayOfLetter) {
-    for ( let i = 0 ; i < str.length ; i++ ) {
-        letter = str[i]
-        print(letter, arrayOfLetter)
+function bulkPrint(textToDisplay, arrayOfASCIILetters, characters) {
+    for ( let i = 0 ; i < arrayOfASCIILetters[0].length ; i++ ) { // For each line
+        let totalString = ""
+        for ( let y = 0 ; y < textToDisplay.length ; y++ ) { // For each letter
+            const letter = textToDisplay[y].toLowerCase()
+            const letterIndex = ( characters.indexOf(letter) !== -1 ) ? characters.indexOf(letter) : characters.length - 1
+            totalString += arrayOfASCIILetters[letterIndex][i] // Construct the text line by line
+        }
+        console.log(totalString)
     }
 }
 
-/***** MAIN ******/
+/****************************************************************/
+/************************* APPLICATION **************************/
+/****************************************************************/
 
 (() => {
-    // Variable
-    const alphabet = "abcdefghijklmnopqrstuvwxyz?"
+    const characters = "abcdefghijklmnopqrstuvwxyz?"
 
     const letterWidth = parseInt(readline());
-    const letterHeight = parseInt(readline());
+    const nbLines = parseInt(readline());
     const textToDisplay = readline();
 
-    let emptyArray = createArray(alphabet.length, [])
+    let emptyArray = createArray(characters.length, [])
+    let arrayOfLines = linesToArray(nbLines)
 
-    let arrayOfLine = createArrayOfLines(letterHeight)
-    let arrayOfLetters = createArrayOfLetters(arrayOfLine, emptyArray, alphabet, letterWidth)
-
-    print("m", arrayOfLetters)
-
+    let arrayOfASCIILetters = createArrayOfLetters(arrayOfLines, emptyArray, characters, letterWidth)
+    bulkPrint(textToDisplay, arrayOfASCIILetters, characters)
 })()
